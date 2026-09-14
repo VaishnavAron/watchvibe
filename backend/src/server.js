@@ -47,7 +47,8 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use(helmet({
   crossOriginResourcePolicy: false,
-  crossOriginEmbedderPolicy: false
+  crossOriginEmbedderPolicy: false,
+  contentSecurityPolicy: false
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -65,6 +66,7 @@ if (swaggerDocument) {
 app.use('/auth', authRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api', apiRoutes);
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 app.get('/health/diagnostics', getDiagnosticsJson);
 app.get('/health/diagnostics/html', getDiagnosticsHtml);

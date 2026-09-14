@@ -91,7 +91,7 @@ export async function getDiagnosticsHtml(req, res) {
         <p style="margin:4px 0 0 0; color:#a1a1aa; font-size:14px;">Real-Time Multi-Cloud & AI Infrastructure Health Monitor</p>
       </div>
       <div style="display:flex; gap:10px; align-items:center;">
-        <button class="btn" onclick="window.location.reload()">🔄 Refresh Probe</button>
+        <a href="/api/health/diagnostics/html" class="btn" style="display:inline-flex; align-items:center; gap:6px;">🔄 Refresh Probe</a>
         <a href="/api/health/diagnostics" target="_blank" class="btn" style="background:#27272a; border:1px solid #3f3f46;">View JSON API</a>
       </div>
     </div>

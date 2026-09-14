@@ -1,0 +1,38 @@
+/* frontend/src/styles/variables.css */
+
+:root {
+  color-scheme: dark;
+  --bg: #06070a;
+  --bg-soft: #0d0f17;
+  --panel: rgba(13, 16, 24, 0.72);
+  --panel-glass: rgba(18, 22, 34, 0.65);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --text: #f4f5f7;
+  --muted: #94a3b8;
+  --muted-strong: #cad0da;
+  
+  /* Luminous Accent Accents */
+  --accent-cyan: #00f0ff;
+  --accent-blue: #38bdf8;
+  --accent-indigo: #6366f1;
+  --accent-pink: #f472b6;
+  --accent-emerald: #10b981;
+  --accent-orange: #ff6b2c;
+
+  /* Shadows & Elevations */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.75);
+  --shadow-cyan-glow: 0 0 32px rgba(0, 240, 255, 0.28);
+  --shadow-indigo-glow: 0 0 32px rgba(99, 102, 241, 0.24);
+
+  /* Border Radii */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  font-family: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}

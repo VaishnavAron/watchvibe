@@ -1,0 +1,220 @@
+/* frontend/src/styles/poster-grid.css */
+
+.freeflow-grid-wrapper {
+  width: 100%;
+}
+
+.freeflow-poster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .freeflow-poster-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+.empty-freeflow-state {
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 20px;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--muted, #94a3b8);
+  font-size: 0.95rem;
+}
+
+/* 3D TACTILE CARD WRAPPER */
+.cinematic-card-wrapper {
+  position: relative;
+  border-radius: 18px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  will-change: transform;
+  content-visibility: auto;
+  contain-intrinsic-size: 200px 320px;
+  outline: none;
+  transform: translateZ(0);
+}
+
+.cinematic-card-wrapper:focus-visible {
+  box-shadow: 0 0 0 3px #00f0ff;
+}
+
+/* Poster Frame */
+.cinematic-poster-frame {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #0d1019;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  aspect-ratio: 2 / 3;
+}
+
+.cinematic-card-wrapper:hover .cinematic-poster-frame {
+  border-color: rgba(0, 240, 255, 0.45);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 240, 255, 0.25);
+}
+
+/* Specular Highlight Sheen */
+.specular-highlight-layer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, transparent 48%);
+  pointer-events: none;
+  z-index: 4;
+  border-radius: 18px;
+}
+
+/* Poster Image */
+.cinematic-poster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.cinematic-card-wrapper:hover .cinematic-poster-img {
+  transform: scale(1.04);
+}
+
+/* Top Badges (Match % & Rating) */
+.card-top-badges {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  z-index: 5;
+}
+
+.match-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.match-high {
+  background: rgba(6, 12, 18, 0.82);
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  color: #00f0ff;
+}
+
+.match-high .match-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #00f0ff;
+  box-shadow: 0 0 6px #00f0ff;
+}
+
+.match-mid {
+  background: rgba(6, 12, 18, 0.82);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+.match-mid .match-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #38bdf8;
+}
+
+.rating-badge-pill {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(6, 12, 18, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fbbf24;
+  font-size: 0.72rem;
+  font-weight: 700;
+  backdrop-filter: blur(10px);
+}
+
+/* Ambient Vignette & Title Overlay */
+.cinematic-card-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 50px 14px 14px;
+  background: linear-gradient(180deg, transparent 0%, rgba(6, 8, 14, 0.6) 30%, rgba(6, 8, 14, 0.98) 100%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  pointer-events: none;
+}
+
+.cinematic-card-title {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.cinematic-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: var(--muted, #94a3b8);
+}
+
+.cinematic-card-snippet {
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: #cbd5e1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+/* Load More Button Wrap */
+.freeflow-load-more-wrap {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+}
+
+.freeflow-load-more-btn {
+  padding: 12px 32px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.freeflow-load-more-btn:hover {
+  background: rgba(0, 240, 255, 0.12);
+  border-color: #00f0ff;
+  color: #00f0ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 240, 255, 0.25);
+}

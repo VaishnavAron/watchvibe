@@ -1,0 +1,34 @@
+{
+  "type": "module",
+  "scripts": {
+    "swagger": "node swagger-gen.js",
+    "start": "npm run swagger && node src/server.js",
+    "dev": "npm run swagger && nodemon src/server.js",
+    "test:system": "node scripts/system_health_check.mjs",
+    "health": "node scripts/system_health_check.mjs"
+  },
+  "dependencies": {
+    "@langchain/ollama": "^1.2.7",
+    "@pinecone-database/pinecone": "^7.2.0",
+    "axios": "^1.16.0",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "express-rate-limit": "^8.5.0",
+    "global-agent": "^4.1.3",
+    "groq-sdk": "^1.1.2",
+    "helmet": "^7.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^7.8.9",
+    "neo4j-driver": "^6.0.1",
+    "redis": "^4.7.1",
+    "swagger-autogen": "^2.23.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}

@@ -1,0 +1,152 @@
+/* frontend/src/styles/landing.css */
+
+.landing-page {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.landing-hero {
+  position: relative;
+  min-height: 58vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 16px;
+  z-index: 10;
+}
+
+.landing-glow-ambient {
+  pointer-events: none;
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  width: 640px;
+  height: 320px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.18) 0%, rgba(99, 102, 241, 0.16) 40%, rgba(236, 72, 153, 0.12) 70%, transparent 100%);
+  filter: blur(90px);
+  z-index: 0;
+}
+
+.landing-pill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-blue, #38bdf8);
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.15);
+}
+
+.landing-prompt-form {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  margin-top: 32px;
+}
+
+.landing-prompt-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 11, 18, 0.75);
+  backdrop-filter: blur(24px);
+  padding: 8px 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-prompt-container:focus-within {
+  border-color: rgba(0, 240, 255, 0.55);
+  box-shadow: 0 0 36px rgba(0, 240, 255, 0.3), 0 24px 60px rgba(0, 0, 0, 0.85);
+  background: rgba(10, 14, 24, 0.9);
+}
+
+.landing-prompt-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 12px 14px;
+  font-size: 1.05rem;
+  color: #fff;
+  outline: none;
+}
+
+.landing-prompt-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.landing-prompt-submit {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #00f0ff, #38bdf8);
+  color: #050608;
+  font-weight: 800;
+  font-size: 1.15rem;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.landing-prompt-submit:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 0 28px rgba(0, 240, 255, 0.6);
+}
+
+.landing-prompt-submit:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.landing-prompt-submit:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.starter-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  max-width: 680px;
+}
+
+.starter-chip-btn {
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.75);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.starter-chip-btn:hover {
+  border-color: rgba(0, 240, 255, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.2);
+}

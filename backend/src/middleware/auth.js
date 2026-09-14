@@ -36,7 +36,7 @@ export async function authenticate(req, res, next) {
     next();
   } catch (err) {
     if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError' || err.message === 'Token revoked' || err.message === 'User not found') {
-      res.clearCookie('token', getClearCookieOptions());
+      res.clearCookie('token', getClearCookieOptions(req));
     }
     req.user = null;
     next();

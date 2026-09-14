@@ -59,7 +59,7 @@ export async function register(req, res) {
       getJwtSecret(),
       { expiresIn: '7d' }
     );
-    res.cookie('token', token, getCookieOptions());
+    res.cookie('token', token, getCookieOptions(req));
     res.status(201).json({
       token,
       user: {
@@ -92,7 +92,7 @@ export async function login(req, res) {
       { expiresIn: '7d' }
     );
 
-    res.cookie('token', token, getCookieOptions());
+    res.cookie('token', token, getCookieOptions(req));
     res.json({
       token,
       user: {
@@ -122,7 +122,7 @@ export async function logout(req, res) {
         }
       } catch (err) { /* ignore */ }
     }
-    res.clearCookie('token', getClearCookieOptions());
+    res.clearCookie('token', getClearCookieOptions(req));
   }
   res.json({ message: 'Logged out' });
 }

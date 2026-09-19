@@ -4,8 +4,10 @@ node_modules/
 # Environment variables
 .env
 
-# Large data files (already in databases)
-data/
+# Large data files (keep raw csvs/movielens folder ignored, allow processed json datasets)
+data/movielens/
+data/*.csv
+data/reupsert_checkpoint.json
 
 # Logs
 *.log

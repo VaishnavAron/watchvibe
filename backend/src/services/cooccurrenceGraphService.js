@@ -143,3 +143,5 @@ export async function querySecondaryNeo4jCoWatched(title, limit = 10) {
     await session.close();
   }
 }
+
+export { driver as secondaryNeo4jDriver };

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Groq from 'groq-sdk';
 import { driver, pineconeIndex } from '../core/2_config.js';
+import { secondaryNeo4jDriver } from './cooccurrenceGraphService.js';
 import redisclient from '../config/redis.js';
 import { User } from '../models/userSchema.js';
 import { sampleMovies, movieIndex } from './movieData.js';
@@ -77,7 +78,7 @@ export async function checkNeo4j() {
     };
   } catch (err) {
     return {
-      name: 'Neo4j Aura Graph DB',
+      name: 'Neo4j Aura Graph DB (Primary)',
       category: 'Knowledge Graph (Phase 2)',
       status: 'DEGRADED',
       critical: false,
@@ -87,6 +88,116 @@ export async function checkNeo4j() {
       recommendation: 'Check NEO4J_URI, NEO4J_USERNAME, and NEO4J_PASSWORD in .env. Verify Neo4j Aura cloud instance is running.'
     };
   }
+}
+
+export async function checkSecondaryNeo4j() {
+  const start = Date.now();
+  try {
+    const movieCount = await withTimeout((async () => {
+      if (!secondaryNeo4jDriver) throw new Error('Secondary Neo4j driver not initialized');
+      const session = secondaryNeo4jDriver.session();
+      try {
+        const result = await session.run('MATCH (m:Movie) RETURN count(m) AS count LIMIT 1');
+        const count = result.records[0]?.get('count');
+        return count?.toNumber ? count.toNumber() : Number(count) || 0;
+      } finally {
+        await session.close();
+      }
+    })(), 8000, 'Secondary Neo4j count query');
+
+    return {
+      name: 'Neo4j Aura Co-occurrence Graph (Secondary)',
+      category: 'Collaborative Graph (Phase 2)',
+      status: 'HEALTHY',
+      critical: false,
+      latencyMs: Date.now() - start,
+      details: {
+        nodeCount: movieCount,
+        uri: (process.env.NEO4J_COOCCURRENCE_URI || 'neo4j+s://8e7df96c.databases.neo4j.io').split('@').pop()
+      }
+    };
+  } catch (err) {
+    return {
+      name: 'Neo4j Aura Co-occurrence Graph (Secondary)',
+      category: 'Collaborative Graph (Phase 2)',
+      status: 'DEGRADED',
+      critical: false,
+      latencyMs: Date.now() - start,
+      error: err.message,
+      fallbackActive: 'In-Memory Co-occurrence Graph Cache',
+      recommendation: 'Verify NEO4J_COOCCURRENCE_URI, NEO4J_COOCCURRENCE_USERNAME, and NEO4J_COOCCURRENCE_PASSWORD in .env.'
+    };
+  }
+}
+
+export async function pingNeo4jKeepAlive() {
+  const timeoutMs = 8000;
+
+  const pingPrimary = async () => {
+    const start = Date.now();
+    try {
+      if (!driver) throw new Error('Primary Neo4j driver not initialized');
+      const session = driver.session();
+      try {
+        await withTimeout(session.run('RETURN 1 AS ping'), timeoutMs, 'Primary Neo4j keep-alive query');
+        return {
+          name: 'Primary Knowledge Graph (499533be)',
+          status: 'ACTIVE',
+          latencyMs: Date.now() - start
+        };
+      } finally {
+        await session.close();
+      }
+    } catch (err) {
+      return {
+        name: 'Primary Knowledge Graph (499533be)',
+        status: 'ERROR',
+        latencyMs: Date.now() - start,
+        error: err.message
+      };
+    }
+  };
+
+  const pingSecondary = async () => {
+    const start = Date.now();
+    try {
+      if (!secondaryNeo4jDriver) throw new Error('Secondary Neo4j driver not initialized');
+      const session = secondaryNeo4jDriver.session();
+      try {
+        await withTimeout(session.run('RETURN 1 AS ping'), timeoutMs, 'Secondary Neo4j keep-alive query');
+        return {
+          name: 'Secondary Co-occurrence Graph (8e7df96c)',
+          status: 'ACTIVE',
+          latencyMs: Date.now() - start
+        };
+      } finally {
+        await session.close();
+      }
+    } catch (err) {
+      return {
+        name: 'Secondary Co-occurrence Graph (8e7df96c)',
+        status: 'ERROR',
+        latencyMs: Date.now() - start,
+        error: err.message
+      };
+    }
+  };
+
+  const [primary, secondary] = await Promise.all([pingPrimary(), pingSecondary()]);
+  const allActive = primary.status === 'ACTIVE' && secondary.status === 'ACTIVE';
+  const anyActive = primary.status === 'ACTIVE' || secondary.status === 'ACTIVE';
+
+  return {
+    status: allActive ? 'HEALTHY' : (anyActive ? 'DEGRADED' : 'DOWN'),
+    message: allActive
+      ? 'Both Neo4j Aura instances are active and keep-alive queries succeeded.'
+      : 'One or more Neo4j Aura instances failed keep-alive ping.',
+    timestamp: new Date().toISOString(),
+    instances: {
+      primary,
+      secondary
+    }
+  };
 }
 
 export async function checkPinecone() {
@@ -320,6 +431,7 @@ export async function runFullDiagnostics() {
   const [
     mongoResult,
     neo4jResult,
+    secondaryNeo4jResult,
     pineconeResult,
     ollamaResult,
     groqResult,
@@ -327,6 +439,7 @@ export async function runFullDiagnostics() {
   ] = await Promise.all([
     checkMongoDB(),
     checkNeo4j(),
+    checkSecondaryNeo4j(),
     checkPinecone(),
     checkOllamaEC2(),
     checkGroqLLM(),
@@ -339,6 +452,7 @@ export async function runFullDiagnostics() {
   const services = [
     mongoResult,
     neo4jResult,
+    secondaryNeo4jResult,
     pineconeResult,
     ollamaResult,
     groqResult,

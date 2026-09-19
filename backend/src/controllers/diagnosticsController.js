@@ -1,4 +1,18 @@
-import { runFullDiagnostics } from '../services/diagnosticsService.js';
+import { runFullDiagnostics, pingNeo4jKeepAlive } from '../services/diagnosticsService.js';
+
+export async function getNeo4jPing(req, res) {
+  try {
+    const report = await pingNeo4jKeepAlive();
+    const statusCode = report.status === 'DOWN' ? 503 : 200;
+    res.status(statusCode).json(report);
+  } catch (err) {
+    res.status(500).json({
+      status: 'ERROR',
+      error: err.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+}
 
 export async function getDiagnosticsJson(req, res) {
   try {

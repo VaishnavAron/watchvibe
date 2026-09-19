@@ -78,8 +78,11 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   try {
-    const { emailid, email, password } = req.body;
+    const { emailid, email, password } = req.body || {};
     const normalizedEmail = (emailid || email || '').trim().toLowerCase();
+    if (!normalizedEmail || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
     const user = await User.findOne({ emailid: normalizedEmail });
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
